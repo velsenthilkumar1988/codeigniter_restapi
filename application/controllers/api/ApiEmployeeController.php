@@ -43,5 +43,52 @@ class ApiEmployeeController extends RestController
         }
         //$this->response($data, 200);
     }
+
+    public function findEmployee_get($id)
+    {
+        $employee = new EmployeeModel;
+        $result = $employee->editEmployee($id);
+        $this->response($result, 200);
+    }
+    public function updateEmployee_put($id)
+    {
+        $employee = new EmployeeModel;
+        $data = [
+            'first_name'    => $this->put('first_name'),
+            'last_name'    => $this->put('last_name'),
+            'phone'    => $this->put('phone'),
+            'email'    => $this->put('email'),
+        ];
+        $update_result = $employee->update_Employee($id,$data);
+        if($update_result > 0){
+            $this->response([
+                'status'    => TRUE,
+                'message'   => 'Employee Update Successfully'
+            ], RestController::HTTP_OK);
+        }else{
+            $this->response([
+                'status'    => FALSE,
+                'message'   => 'Not Update Employee Data'
+            ], RestController::HTTP_BAD_REQUEST);
+        }
+    }
+
+
+    public function deleteEmployee_delete($id)
+    {
+        $employee = new EmployeeModel;
+        $result = $employee->delete_Employee($id);
+        if($result > 0){
+            $this->response([
+                'status'    => TRUE,
+                'message'   => 'Employee Deleted Successfully'
+            ], RestController::HTTP_OK);
+        }else{
+            $this->response([
+                'status'    => FALSE,
+                'message'   => 'Not Delete Employee Data'
+            ], RestController::HTTP_BAD_REQUEST);
+        }
+    }
 }
 ?>
